@@ -40,6 +40,30 @@ Before you can connect to Denodo through JDBC from SAS Viya, you need to have th
 
 This section provides step-by-step instructions on how to set up the connection to SQream using JDBC from SAS Viya Compute or CAS.
 
+- Mandatory : Modifify sas-programming-environment-java-policy-config
+
+How to add a java policy to sas-programming-environment-java-policy-config-*
+
+1. Read site-config/sas-programming-environment/java-security-policy/README.md
+2. Update sas-bases/examples/sas-programming-environment/java-security-policy/README.md as follows:
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata: 
+  name: sas-add-allowed-java-class
+patch: |-
+  - op: add
+    path: /data/SAS_INIT_JRE_POLICY_DENODO_LOGGING_PERMISSION
+    value: 'permission java.util.logging.LoggingPermission "control";'
+target: 
+  kind: ConfigMap
+  name: sas-programming-environment-java-policy-config
+
+The content of the value property will appear as follows in the ConfigMap:
+
+![image](https://github.com/user-attachments/assets/adb603fe-48ab-4706-9edd-f574caf750ba)
+
+
 - SAS Compute Library creation
 
 ```sas
